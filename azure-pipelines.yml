@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 pool:
   vmImage: ubuntu-latest
 
@@ -12,7 +7,22 @@ steps:
   inputs:
     SonarCloud: 'DEVSECOPS-USACH'
     organization: 'rsanzana-devsecops-usach'
-    scannerMode: 'MSBuild'
     projectKey: 'RSANZANA-DEVSECOPS-USACH_spring-boot-kubernetes'
     projectName: 'spring-boot-kubernetes'
 
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
+
+- task: sonarcloud-buildbreaker@2
+  inputs:
+    SonarCloud: 'DEVSECOPS-USACH'
+    organization: 'rsanzana-devsecops-usach'
+    

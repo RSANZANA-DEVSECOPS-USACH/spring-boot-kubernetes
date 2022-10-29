@@ -55,7 +55,7 @@ stages:
 - stage: Container_Security
   jobs:
     - job: J3
-      displayName: Container_Security
+      displayName: Container Security
       steps:
         - task: Maven@4
           displayName: Compilando Código fuente

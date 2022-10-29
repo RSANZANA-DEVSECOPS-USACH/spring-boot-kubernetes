@@ -15,8 +15,8 @@ pool:
     projectKey: 'RSANZANA-DEVSECOPS-USACH_spring-boot-kubernetes'
     projectName: 'spring-boot-kubernetes'
 
-- task: Maven@4
-   inputs:
+  - task: Maven@4
+  inputs:
     mavenPomFile: 'pom.xml'
     publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
@@ -27,7 +27,7 @@ pool:
     sqMavenPluginVersionChoice: 'latest'
 
   - task: sonarcloud-buildbreaker@2
-    inputs:
-      SonarCloud: 'DEVSECOPS-USACH'
-      organization: 'rsanzana-devsecops-usach'
+  inputs:
+    SonarCloud: 'DEVSECOPS-USACH'
+    organization: 'rsanzana-devsecops-usach'
     

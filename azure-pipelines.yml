@@ -1,3 +1,10 @@
+
+stages:
+- stage: SAST
+
+jobs:
+- job: SAST
+
 pool:
   vmImage: ubuntu-latest
 

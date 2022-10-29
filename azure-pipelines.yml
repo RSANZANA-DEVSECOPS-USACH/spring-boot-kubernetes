@@ -52,10 +52,10 @@ stages:
           scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'ALL'
           reportsDirectory: '$(Build.SourcesDirectory)/resultados'
-- stage: Container Security
+- stage: Container-Security
   jobs:
     - job: J3
-      displayName: Container Security
+      displayName: Container-Security
       steps:
         - task: Maven@4
           displayName: Compilando Código fuente

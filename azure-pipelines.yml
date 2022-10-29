@@ -36,6 +36,7 @@ stages:
     displayName: SCA
     steps:
       - task: Maven@4
+        displayName: Compilando Código fuente      
         inputs:
           mavenPomFile: 'pom.xml'
           publishJUnitResults: true
@@ -44,9 +45,8 @@ stages:
           mavenAuthenticateFeed: false
           effectivePomSkip: false
           sonarQubeRunAnalysis: false
-      - script: echo etapa SCA!
-        displayName: 'Run dependency checks'
       - task: dependency-check-build-task@6
+        displayName: Ejecutando análisis de dependencias
         inputs:
           projectName: 'spring-boot-kubernetes'
           scanPath: '$(Build.SourcesDirectory)/target/*'
@@ -58,6 +58,7 @@ stages:
       displayName: Container-Security
       steps:
         - task: Maven@4
+          displayName: Compilando Código fuente
           inputs:
             mavenPomFile: 'pom.xml'
             publishJUnitResults: true
@@ -67,13 +68,16 @@ stages:
             effectivePomSkip: false
             sonarQubeRunAnalysis: false
         - task: DockerInstaller@0
+          displayName: Instalando Docker 17.09.0-ce
           inputs:
             dockerVersion: '17.09.0-ce'
         - task: Docker@2
+          displayName: Conectando a DockerHub
           inputs:
             containerRegistry: 'Docker'
             command: 'login'
         - task: Docker@2
+          displayName: Ejecutando análisis de imagen con trivy
           inputs:
             containerRegistry: 'Docker'
             repository: 'rsanzana/spring-boot-kubernetes'
@@ -87,8 +91,8 @@ stages:
             trivy image rsanzana/spring-boot-kubernetes:latest 
             #trivy image --exit-code 0 --severity LOW,MEDIUM rsanzana/spring-boot-kubernetes:latest
             trivy image --exit-code 1 --severity HIGH,CRITICAL rsanzana/spring-boot-kubernetes:latest
-          displayName: Image Scan
         - task: Docker@2
+          displayName: Subiendo imagen a DockerHub
           inputs:
             repository: 'rsanzana/spring-boot-kubernetes'
             command: 'push'

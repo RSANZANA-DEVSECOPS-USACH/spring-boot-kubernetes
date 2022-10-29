@@ -2,7 +2,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: SAST_
+- stage: SAST
   jobs:
   - job: J1
     displayName: SAST
@@ -30,7 +30,7 @@ stages:
         inputs:
           SonarCloud: 'DEVSECOPS-USACH'
           organization: 'rsanzana-devsecops-usach'
-- stage: SCA_
+- stage: SCA
   jobs:
   - job: J2
     displayName: SCA
@@ -52,7 +52,7 @@ stages:
           scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'ALL'
           reportsDirectory: '$(Build.SourcesDirectory)/resultados'
-- stage: Container_Security_
+- stage: Container_Security
   jobs:
     - job: J3
       displayName: Container-Security

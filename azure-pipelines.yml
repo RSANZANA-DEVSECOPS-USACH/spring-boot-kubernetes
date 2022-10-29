@@ -49,15 +49,6 @@ stages:
           scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'ALL'
           reportsDirectory: '$(Build.SourcesDirectory)/resultados'
-      - script: |
-          #echo "$(<$(Build.SourcesDirectory)/resultados/dependency-check-report.csv )"
-          vulne=$(grep ",HIGH," $(Build.SourcesDirectory)/resultados/dependency-check-report.csv | wc -l)          
-          if [ $vulne -gt 0 ];
-          then 
-            echo $vulne "HIGH Vulnerabilidades encontradas"
-            echo "Proceso Pipeline detenido: HIGH Vulnerabilities"
-            exit 1;
-          fi;
 - stage: Container_Security_
   jobs:
     - job: J3

@@ -8,12 +8,14 @@ stages:
     displayName: SAST
     steps:
       - task: SonarCloudPrepare@1
+        displayName: Conectando a sonarcloud.io
         inputs:
           SonarCloud: 'DEVSECOPS-USACH'
           organization: 'rsanzana-devsecops-usach'
           projectKey: 'RSANZANA-DEVSECOPS-USACH_spring-boot-kubernetes'
           projectName: 'spring-boot-kubernetes'      
       - task: Maven@4
+        displayName: Ejecutando análisis de código
         inputs:
           mavenPomFile: 'pom.xml'
           publishJUnitResults: true
@@ -24,6 +26,7 @@ stages:
           sonarQubeRunAnalysis: true
           sqMavenPluginVersionChoice: 'latest'
       - task: sonarcloud-buildbreaker@2
+        displayName: Quiebre stage SAST
         inputs:
           SonarCloud: 'DEVSECOPS-USACH'
           organization: 'rsanzana-devsecops-usach'

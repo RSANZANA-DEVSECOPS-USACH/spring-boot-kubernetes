@@ -41,6 +41,9 @@ stages:
             trivy image rsanzana/spring-boot-kubernetes:latest
             trivy image --exit-code 1 --severity HIGH,CRITICAL rsanzana/spring-boot-kubernetes:latest
             #echo "Se encontraron vulnerabilidades de tipo HIGH"
+        - task: trivy@1
+          inputs:
+          image: rsanzana/spring-boot-kubernetes:latest
         - task: Docker@2
           displayName: Subiendo imagen a DockerHub
           inputs:

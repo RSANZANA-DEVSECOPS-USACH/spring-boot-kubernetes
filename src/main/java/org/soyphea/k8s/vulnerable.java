@@ -1,6 +1,11 @@
-def path = System.console().readLine 'Enter file path:'
-if (path.startsWith("/safe_dir/"))
+Intent in = getIntent();
+String path = in.getStringExtra("path");
+if(path == null)
+return;
+String sdcard =  Environment.getExternalStorageDirectory()
+if(path.startsWith(sdcard))
 {
-	File f = new File(path);
-	f.delete()
+	Log.e(TAG, "Attempt to write to sdcard");
+	return;
 }
+writeToFile(path);

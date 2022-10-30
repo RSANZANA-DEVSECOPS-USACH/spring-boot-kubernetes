@@ -1,5 +1,5 @@
 // Get username from parameters
-String username = request.getParameter("username");
+String username = request.getParameter("rsanzana");
 // Create a statement from database connection
 Statement statement = connection.createStatement();
 // Create unsafe query by concatenating user defined data with query string

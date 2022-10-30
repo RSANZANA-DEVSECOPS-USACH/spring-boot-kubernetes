@@ -13,7 +13,7 @@ stages:
           SonarCloud: 'DEVSECOPS-USACH'
           organization: 'rsanzana-devsecops-usach'
           projectKey: 'RSANZANA-DEVSECOPS-USACH_spring-boot-kubernetes'
-          projectName: 'spring-boot-kubernetes'      
+          projectName: 'spring-boot-kubernetes'
       - task: Maven@4
         displayName: Ejecutando análisis de código
         inputs:
@@ -36,7 +36,7 @@ stages:
     displayName: SCA
     steps:
       - task: Maven@4
-        displayName: Compilando Código fuente      
+        displayName: Compilando Código fuente
         inputs:
           mavenPomFile: 'pom.xml'
           publishJUnitResults: true
@@ -51,7 +51,14 @@ stages:
           projectName: 'spring-boot-kubernetes'
           scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'ALL'
-          reportsDirectory: '$(Build.SourcesDirectory)/resultados'
+          reportsDirectory: '$(Build.SourcesDirectory)/reports'
+      - script: |
+          res=$(grep ",HIGH," $(Build.SourcesDirectory)/reports/dependency-check-report.csv | wc -l)
+          if [ $res -gt 0 ];
+          then
+            echo $res "Se encontraron vulnerabilidades de tipo HIGH"
+            exit 1;
+          fi;
 - stage: Container_Security
   jobs:
     - job: J3
@@ -88,8 +95,7 @@ stages:
             sudo apt-get install -y rpm
             wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
             sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
-            trivy image rsanzana/spring-boot-kubernetes:latest 
-            #trivy image --exit-code 0 --severity LOW,MEDIUM rsanzana/spring-boot-kubernetes:latest
+            trivy image rsanzana/spring-boot-kubernetes:latest
             #trivy image --exit-code 1 --severity HIGH,CRITICAL rsanzana/spring-boot-kubernetes:latest
         - task: Docker@2
           displayName: Subiendo imagen a DockerHub

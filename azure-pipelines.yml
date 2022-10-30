@@ -52,13 +52,13 @@ stages:
           scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'ALL'
           reportsDirectory: '$(Build.SourcesDirectory)/reports'
-      - script: |
-          res=$(grep ",HIGH," $(Build.SourcesDirectory)/reports/dependency-check-report.csv | wc -l)
-          if [ $res -gt 0 ];
-          then
-            echo $res "Se encontraron vulnerabilidades de tipo HIGH"
-            exit 1;
-          fi;
+#      - script: |
+#          res=$(grep ",HIGH," $(Build.SourcesDirectory)/reports/dependency-check-report.csv | wc -l)
+#          if [ $res -gt 0 ];
+#          then
+#            echo $res "Se encontraron vulnerabilidades de tipo HIGH"
+#            exit 1;
+#          fi;
 - stage: Container_Security
   jobs:
     - job: J3

@@ -4,7 +4,7 @@ pool:
 stages:
 - stage: SAST
   jobs:
-  - job: J1
+  - job: JOB1
     displayName: SAST
     steps:
       - task: SonarCloudPrepare@1
@@ -32,7 +32,7 @@ stages:
           organization: 'rsanzana-devsecops-usach'
 - stage: SCA
   jobs:
-  - job: J2
+  - job: JOB2
     displayName: SCA
     steps:
       - task: Maven@4
@@ -61,7 +61,7 @@ stages:
 #          fi;
 - stage: Container_Security
   jobs:
-    - job: J3
+    - job: JOB3
       displayName: Container Security
       steps:
         - task: Maven@4

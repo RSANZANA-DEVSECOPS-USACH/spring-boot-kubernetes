@@ -1,0 +1,33 @@
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: SCA
+  jobs:
+  - job: JOB2
+    displayName: SCA
+    steps:
+      - task: Maven@4
+        displayName: Compilando Código fuente
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+      - task: dependency-check-build-task@6
+        displayName: Ejecutando análisis de dependencias
+        inputs:
+          projectName: 'spring-boot-kubernetes'
+          scanPath: '$(Build.SourcesDirectory)/target/*'
+          format: 'ALL'
+          reportsDirectory: '$(Build.SourcesDirectory)/reports'
+      - script: |
+          res=$(grep ",HIGH," $(Build.SourcesDirectory)/reports/dependency-check-report.csv | wc -l)
+          if [ $res -gt 0 ];
+          then
+            echo $res "Se encontraron vulnerabilidades de tipo HIGH"
+            exit 1;
+          fi;

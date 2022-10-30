@@ -1,0 +1,50 @@
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: Container_Security
+  jobs:
+    - job: JOB3
+      displayName: Container Security
+      steps:
+        - task: Maven@4
+          displayName: Compilando Código fuente
+          inputs:
+            mavenPomFile: 'pom.xml'
+            publishJUnitResults: true
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: false
+        - task: DockerInstaller@0
+          displayName: Instalando Docker 17.09.0-ce
+          inputs:
+            dockerVersion: '17.09.0-ce'
+        - task: Docker@2
+          displayName: Conectando a DockerHub
+          inputs:
+            containerRegistry: 'Docker'
+            command: 'login'
+        - task: Docker@2
+          displayName: Ejecutando análisis de imagen con trivy
+          inputs:
+            containerRegistry: 'Docker'
+            repository: 'rsanzana/spring-boot-kubernetes'
+            command: 'build'
+            Dockerfile: '**/Dockerfile'
+            tags: 'latest'
+        - script: |
+            sudo apt-get install -y rpm
+            wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
+            sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
+            trivy image rsanzana/spring-boot-kubernetes:latest
+            trivy image --exit-code 1 --severity HIGH,CRITICAL rsanzana/spring-boot-kubernetes:latest
+            echo "Se encontraron vulnerabilidades de tipo HIGH"
+        - task: Docker@2
+          displayName: Subiendo imagen a DockerHub
+          inputs:
+            repository: 'rsanzana/spring-boot-kubernetes'
+            command: 'push'
+            containerRegistry: 'Docker'
+            tags: 'latest'

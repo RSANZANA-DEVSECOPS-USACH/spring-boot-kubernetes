@@ -1,24 +1,6 @@
-try
+def path = System.console().readLine 'Enter file path:'
+if (path.startsWith("/safe_dir/"))
 {
-Class.forName("com.mysql.jdbc.Driver").newInstance();
-String url = "jdbc:mysql://10.12.1.34/" + request.getParameter("selectedDB");
-conn = DriverManager.getConnection(url, username, password);
-doUnitWork();
+	File f = new File(path);
+	f.delete()
 }
-catch(ClassNotFoundException cnfe)
-{
-//
-}
-catch(SQLException se)
-{
-  //
-}
-catch(InstantiationException ie)
-{
-  //
-}
-finally
-{
- // manage conn
-}
-       

@@ -1,18 +1,19 @@
-import java.util.zip.ZipFile;
-import java.util.zip.ZipEntry;
-⋮
-public void extract(ZipFile zip) {
-     ⋮
-     String toDir = "/my/target/directory/";
-     Enumeration entries = zip.entries();
-     while (entries.hasMoreElements()) {
-        ZipEntry zipEntry = entries.nextElement();
-        ⋮
-        File file = new File(toDir, zipEntry.getName())
-        InputStream istr = zipFile.getInputStream(zipEntry);
-        final OutputStream os = Files.newOutputStream(file.toPath());
-        bos  = new BufferedOutputStream(os);
-        IOUtils.copy(bis, bos);
+package com.example.springxss;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class XSSController {
+
+    @GetMapping("/hello")
+    ResponseEntity<String> hello(@RequestParam(value = "name", defaultValue = "World") String name) {
+        return new ResponseEntity<>("Hello World!" + name, HttpStatus.OK);
     }
+
 }

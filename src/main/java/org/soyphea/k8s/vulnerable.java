@@ -1,11 +1,19 @@
-// Get username from parameters
-String username = request.getParameter("rsanzana");
-// Create a statement from database connection
-Statement statement = connection.createStatement();
-// Create unsafe query by concatenating user defined data with query string
-String query = "SELECT secret FROM Users WHERE (username = '" + username + "' AND NOT role = 'admin')";
-// ... OR ...
-// Insecurely format the query string using user defined data
-String query = String.format("SELECT secret FROM Users WHERE (username = '%s' AND NOT role = 'admin')", username);
-// Execute query and return the results
-ResultSet result = statement.executeQuery(query);
+protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    response.setContentType("application/json");
+    PrintWriter out = response.getWriter();
+    try {
+           Connection con=new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
+           String email=request.getParameter("email").trim();
+           JSONObject json=new JSONObject();
+            if(con!=null && !con.isClosed())
+            {
+                ResultSet rs=null;
+                Statement stmt = con.createStatement();
+                rs=stmt.executeQuery("select * from users where email='"+email+"'");
+            [...]
+}
+
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    processRequest(request, response);
+}

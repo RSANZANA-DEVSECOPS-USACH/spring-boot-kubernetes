@@ -9,12 +9,10 @@ public void extract(ZipFile zip) {
         ZipEntry zipEntry = entries.nextElement();
         ⋮
         File file = new File(toDir, zipEntry.getName())
-        if( !file.getCanonicalPath().startsWith(toDir) ){
-          throw new SecurityException("ZipEntry not within target directory!");
-        }
         InputStream istr = zipFile.getInputStream(zipEntry);
         final OutputStream os = Files.newOutputStream(file.toPath());
         bos  = new BufferedOutputStream(os);
         IOUtils.copy(bis, bos);
+
     }
 }

@@ -43,7 +43,7 @@ stages:
             #echo "Se encontraron vulnerabilidades de tipo HIGH"
         - task: trivy@1
           inputs:
-          image: rsanzana/spring-boot-kubernetes:latest
+            image: rsanzana/spring-boot-kubernetes:latest
         - task: Docker@2
           displayName: Subiendo imagen a DockerHub
           inputs:

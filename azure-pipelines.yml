@@ -34,13 +34,13 @@ stages:
             command: 'build'
             Dockerfile: '**/Dockerfile'
             tags: 'latest'
-        - script:
-          displayName: Ejecutando análisis de imagen con Trivy |
+        - script: |
             sudo apt-get install -y rpm
             wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
             sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
             trivy image rsanzana/spring-boot-kubernetes:latest
             trivy image --exit-code 1 --severity HIGH,CRITICAL rsanzana/spring-boot-kubernetes:latest
+        displayName: Ejecutando análisis de imagen con Trivy            
         - task: Docker@2
           displayName: Subiendo imagen a DockerHub
           inputs:

@@ -1,19 +1,24 @@
-protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    response.setContentType("application/json");
-    PrintWriter out = response.getWriter();
-    try {
-           Connection con=new DBConnect().connect(getServletContext().getRealPath("/WEB-INF/config.properties"));
-           String email=request.getParameter("email").trim();
-           JSONObject json=new JSONObject();
-            if(con!=null && !con.isClosed())
-            {
-                ResultSet rs=null;
-                Statement stmt = con.createStatement();
-                rs=stmt.executeQuery("select * from users where email='"+email+"'");
-            [...]
+try
+{
+Class.forName("com.mysql.jdbc.Driver").newInstance();
+String url = "jdbc:mysql://10.12.1.34/" + request.getParameter("selectedDB");
+conn = DriverManager.getConnection(url, username, password);
+doUnitWork();
 }
-
-@Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    processRequest(request, response);
+catch(ClassNotFoundException cnfe)
+{
+//
 }
+catch(SQLException se)
+{
+  //
+}
+catch(InstantiationException ie)
+{
+  //
+}
+finally
+{
+ // manage conn
+}
+       

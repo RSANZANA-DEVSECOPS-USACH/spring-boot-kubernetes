@@ -27,7 +27,7 @@ stages:
             containerRegistry: 'Docker'
             command: 'login'
         - task: Docker@2
-          displayName: Ejecutando análisis de imagen con trivy
+          displayName: Compilando imagen Docker
           inputs:
             containerRegistry: 'Docker'
             repository: 'rsanzana/spring-boot-kubernetes'
@@ -42,6 +42,7 @@ stages:
             #trivy image --exit-code 1 --severity HIGH,CRITICAL rsanzana/spring-boot-kubernetes:latest
             #echo "Se encontraron vulnerabilidades de tipo HIGH"
         - task: trivy@1
+          displayName: Ejecutando análisis de imagen con Trivy  
           inputs:
             image: rsanzana/spring-boot-kubernetes:latest
         - task: Docker@2

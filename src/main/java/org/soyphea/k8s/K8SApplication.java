@@ -24,4 +24,7 @@ public class K8SApplication implements CommandLineRunner {
         log.info(" Fetched user from k8s ConfigMap <spring-boot-k8s> is :{}", userConfig);
 
     }
+
+TransformerFactory trfactory = TransformerFactory.newInstance();
+
 }

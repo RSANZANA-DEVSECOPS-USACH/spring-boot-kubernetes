@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-//import javax.crypto.Cipher;
+import javax.crypto.Cipher;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(Controller.class)

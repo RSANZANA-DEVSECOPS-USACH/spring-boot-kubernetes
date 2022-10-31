@@ -16,5 +16,4 @@ public class UserConfig {
 
     String name;
     String blog;
-    String rsanzana;
 }
